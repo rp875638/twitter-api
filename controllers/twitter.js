@@ -23,7 +23,7 @@ exports.createTweet = (req, res, next) => {
     Tweet.create({userId,content,isRetweet})
     .then(tweet=>{
         tweet.save();
-        res.status(201).json({message:'Tweet created successfully'});
+        res.status(201).json({tweetId:tweet._id,message:'Tweet created successfully'});
     })
     .catch(error=>{
         res.status(500).json({error:error.message});
@@ -50,7 +50,7 @@ exports.likeTweet = (req, res, next) => {
         if(tweet){
             tweet.likes.addToSet(_id);
             tweet.save()
-            res.status(200).json({message:'Liked tweet successfully'});
+            res.status(200).json({tweetId:tweet._id,message:'Liked tweet successfully'});
         }
         else{
             res.status(404).json({error:'No found'});
@@ -70,7 +70,7 @@ exports.dislikeTweet = (req, res, next) => {
         if(tweet){
             tweet.likes.pull(_id);
             tweet.save();
-            res.status(200).json({message:'Disliked tweet successfully'});
+            res.status(200).json({tweetId:tweet._id,message:'Disliked tweet successfully'});
         }
         else{
             res.status(404).json({error:'No found'});
@@ -90,7 +90,7 @@ exports.commentTweet = (req, res, next) => {
         if(tweet){
             tweet.comments.push({userId,comment});
             tweet.save();
-            res.status(200).json({message:'Commented on tweet successfully'});
+            res.status(200).json({commentId:comment._id,message:'Commented on tweet successfully'});
         }
         else{
             res.status(404).json({error:'No found'});

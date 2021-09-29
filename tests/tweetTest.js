@@ -12,19 +12,18 @@ describe('User API',()=>{
 
     describe('GET /tweet/:id',()=>{
         it('It should get tweets',(done)=>{
-            const user = {
-                username:"ram",
-                password:"ram@123"
-            }
+            const id = "6154356623e8870cb908810d";
             chai.request('http://localhost:3000')
-            .get('/tweet/:id')
-            .send(user)
+            .get(`/tweet/${id}`)
             .end((error,response)=>{
                 
                 response.should.have.status(200);
                 response.body.should.be.a('object');
                 response.body.should.have.property('userId');
-                response.body.should.have.property('message');
+                response.body.should.have.property('content');
+                response.body.should.have.property('likes');
+                response.body.should.have.property('comments');
+                response.body.should.have.property('retweet');
 
                done()
             })
@@ -34,18 +33,18 @@ describe('User API',()=>{
 
     describe('POST /tweet',()=>{
         it('It should create tweet',(done)=>{
-            const user = {
-                username:"ram",
-                password:"ram@123"
+            const tweet = {
+                userId:"6154356623e8870cb908810d",
+                content:"Hello rampravesh. Welcome to the world of node."
             }
             chai.request('http://localhost:3000')
             .post('/tweet')
-            .send(user)
+            .send(tweet)
             .end((error,response)=>{
                 
                 response.should.have.status(200);
                 response.body.should.be.a('object');
-                response.body.should.have.property('userId');
+                response.body.should.have.property('tweetId');
                 response.body.should.have.property('message');
 
                done()
@@ -56,18 +55,13 @@ describe('User API',()=>{
 
     describe('DELETE /tweet/:id',()=>{
         it('It should delete tweet',(done)=>{
-            const user = {
-                username:"ram",
-                password:"ram@123"
-            }
+            const id = "61544260b5a782692df6cd87"
             chai.request('http://localhost:3000')
-            .delete('/tweet/:id')
-            .send(user)
+            .delete(`/tweet/${id}`)
             .end((error,response)=>{
                 
                 response.should.have.status(200);
                 response.body.should.be.a('object');
-                response.body.should.have.property('userId');
                 response.body.should.have.property('message');
 
                done()
@@ -78,18 +72,17 @@ describe('User API',()=>{
 
     describe('POST /tweet/like/:id',()=>{
         it('It should like tweet',(done)=>{
-            const user = {
-                username:"ram",
-                password:"ram@123"
-            }
+            const userId = "6154356623e8870cb908810d";
+            const tweetId = "61546eda14ef3cd863bb1c68";
+            
             chai.request('http://localhost:3000')
-            .put('/tweet/like/:id')
-            .send(user)
+            .put(`/tweet/like/${tweetId}`)
+            .send(userId)
             .end((error,response)=>{
                 
                 response.should.have.status(200);
                 response.body.should.be.a('object');
-                response.body.should.have.property('userId');
+                response.body.should.have.property('tweetId');
                 response.body.should.have.property('message');
 
                done()
@@ -100,18 +93,17 @@ describe('User API',()=>{
 
     describe('POST /tweet/dislike/:id',()=>{
         it('It should dislike tweet',(done)=>{
-            const user = {
-                username:"ram",
-                password:"ram@123"
-            }
+            const userId = "6154356623e8870cb908810d";
+            const tweetId = "61546eda14ef3cd863bb1c68";
+
             chai.request('http://localhost:3000')
-            .put('/tweet/dislike/:id')
-            .send(user)
+            .put(`/tweet/dislike/${tweetId}`)
+            .send(userId)
             .end((error,response)=>{
                 
                 response.should.have.status(200);
                 response.body.should.be.a('object');
-                response.body.should.have.property('userId');
+                response.body.should.have.property('tweetId');
                 response.body.should.have.property('message');
 
                done()
@@ -120,20 +112,21 @@ describe('User API',()=>{
             
     })
 
-    describe('POST /tweet//comment/:id',()=>{
+    describe('POST /tweet/comment/:id',()=>{
         it('It should comment on tweet',(done)=>{
-            const user = {
-                username:"ram",
-                password:"ram@123"
+            const comment = {
+                userId:"6154356623e8870cb908810d",
+                comment:"Rampravesh you are good in nodejs."
             }
+            const tweetId = "61546eda14ef3cd863bb1c68";
             chai.request('http://localhost:3000')
-            .put('/tweet//comment/:id')
-            .send(user)
+            .put(`/tweet/comment/${tweetId}`)
+            .send(comment)
             .end((error,response)=>{
                 
                 response.should.have.status(200);
                 response.body.should.be.a('object');
-                response.body.should.have.property('userId');
+                response.body.should.have.property('commentId');
                 response.body.should.have.property('message');
 
                done()
@@ -142,20 +135,21 @@ describe('User API',()=>{
             
     })
 
-    describe('POST /unfollow-user',()=>{
-        it('It should unfollow-user',(done)=>{
-            const user = {
-                username:"ram",
-                password:"ram@123"
+    describe('POST /retweet',()=>{
+        it('It should create retweet',(done)=>{
+            const retweet = {
+                userId:"6154356623e8870cb908810d",
+                content:"Hello rampravesh. Welcome to the world of node.",
+                isTweet:"6154356e23e8870cb9088111"
             }
             chai.request('http://localhost:3000')
-            .post('/user/unfollow-user')
-            .send(user)
+            .post('/tweet')
+            .send(retweet)
             .end((error,response)=>{
                 
                 response.should.have.status(200);
                 response.body.should.be.a('object');
-                response.body.should.have.property('userId');
+                response.body.should.have.property('tweetId');
                 response.body.should.have.property('message');
 
                done()
